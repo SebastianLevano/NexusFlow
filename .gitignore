@@ -38,6 +38,9 @@ coverage/
 *.coverage
 *.coveragexml
 
+# DataProtection keys (default location when running outside Docker)
+**/NexusFlow.Api/keys/
+
 # Misc
 .cache/
 dist/

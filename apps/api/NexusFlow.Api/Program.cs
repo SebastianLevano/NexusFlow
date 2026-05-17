@@ -23,7 +23,8 @@ builder.Host.UseSerilog((ctx, lc) => lc
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddProblemDetails();
 
-var dataProtectionPath = builder.Configuration["DataProtection:KeysPath"] ?? "/app/keys";
+var dataProtectionPath = builder.Configuration["DataProtection:KeysPath"]
+    ?? Path.Combine(builder.Environment.ContentRootPath, "keys");
 Directory.CreateDirectory(dataProtectionPath);
 builder.Services
     .AddDataProtection()
