@@ -58,7 +58,7 @@ public sealed class WorkflowsFlowTests : IAsyncLifetime
             description = "Smoke test",
             triggerType = "webhook",
             triggerConfig = new { secret = "abc" },
-            steps = new[]
+            steps = new object[]
             {
                 new { orderIndex = 0, actionType = "http_request", config = new { method = "POST", url = "https://httpbin.org/post" } },
                 new { orderIndex = 1, actionType = "save_to_database", config = new { } },
