@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NexusFlow.Executions.Abstractions;
 using NexusFlow.Executions.Application;
 using NexusFlow.Executions.Application.Actions;
@@ -19,10 +20,15 @@ public static class ExecutionsModule
 {
     public const string Name = "executions";
 
-    public static IServiceCollection AddExecutionsModule(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddExecutionsModule(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IHostEnvironment environment)
     {
         var connectionString = configuration.GetConnectionString("Postgres")
             ?? throw new InvalidOperationException("Missing ConnectionStrings:Postgres.");
+
+        var isTesting = environment.IsEnvironment("Testing");
 
         services.AddDbContext<ExecutionsDbContext>(opt =>
         {
@@ -54,11 +60,14 @@ public static class ExecutionsModule
             .UseRecommendedSerializerSettings()
             .UsePostgreSqlStorage(opt => opt.UseNpgsqlConnection(connectionString)));
 
-        services.AddHangfireServer(opt =>
+        if (!isTesting)
         {
-            opt.WorkerCount = Math.Max(2, Environment.ProcessorCount);
-            opt.Queues = ["default"];
-        });
+            services.AddHangfireServer(opt =>
+            {
+                opt.WorkerCount = Math.Max(2, Environment.ProcessorCount);
+                opt.Queues = ["default"];
+            });
+        }
 
         return services;
     }

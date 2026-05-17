@@ -53,7 +53,7 @@ builder.Services.AddNexusFlowAuthentication(builder.Configuration);
 builder.Services
     .AddAuthModule(builder.Configuration)
     .AddWorkflowsModule(builder.Configuration)
-    .AddExecutionsModule(builder.Configuration)
+    .AddExecutionsModule(builder.Configuration, builder.Environment)
     .AddIntegrationsModule(builder.Configuration);
 
 var postgresConnection = builder.Configuration.GetConnectionString("Postgres");
