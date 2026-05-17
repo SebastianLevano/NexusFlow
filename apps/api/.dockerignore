@@ -1,0 +1,11 @@
+**/bin
+**/obj
+**/.vs
+**/node_modules
+**/.git
+**/.idea
+**/.vscode
+**/*.user
+**/TestResults
+**/.env*
+!**/.env.example

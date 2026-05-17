@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <RootNamespace>NexusFlow.Api</RootNamespace>
+    <UserSecretsId>nexusflow-api-dev</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NexusFlow.Shared\NexusFlow.Shared.csproj" />
+    <ProjectReference Include="..\Modules\Auth\NexusFlow.Auth\NexusFlow.Auth.csproj" />
+    <ProjectReference Include="..\Modules\Workflows\NexusFlow.Workflows\NexusFlow.Workflows.csproj" />
+    <ProjectReference Include="..\Modules\Executions\NexusFlow.Executions\NexusFlow.Executions.csproj" />
+    <ProjectReference Include="..\Modules\Integrations\NexusFlow.Integrations\NexusFlow.Integrations.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Enrichers.Environment" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" />
+  </ItemGroup>
+</Project>

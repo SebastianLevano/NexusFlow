@@ -1,0 +1,80 @@
+name: nexusflow
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexusflow-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nexusflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nexusflow_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-nexusflow}
+    ports:
+      # Host port is configurable so it doesn't clash with a local Postgres.
+      # The API container always talks to `postgres:5432` via the docker network.
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nexusflow} -d ${POSTGRES_DB:-nexusflow}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    container_name: nexusflow-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_URLS: http://+:5080
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=${POSTGRES_DB:-nexusflow};Username=${POSTGRES_USER:-nexusflow};Password=${POSTGRES_PASSWORD:-nexusflow_dev}
+      Jwt__Issuer: ${Jwt__Issuer:-nexusflow}
+      Jwt__Audience: ${Jwt__Audience:-nexusflow-web}
+      Jwt__SigningKey: ${Jwt__SigningKey:-change-me-to-a-very-long-random-string-at-least-32-chars}
+      Jwt__AccessTokenMinutes: ${Jwt__AccessTokenMinutes:-15}
+      Jwt__RefreshTokenDays: ${Jwt__RefreshTokenDays:-14}
+      Cors__AllowedOrigins: ${Cors__AllowedOrigins:-http://localhost:3000}
+      DataProtection__KeysPath: /app/keys
+    ports:
+      - "5080:5080"
+    volumes:
+      - api-dp-keys:/app/keys
+
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+    container_name: nexusflow-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5080}
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+  # Optional pgAdmin — start with: docker compose --profile tools up
+  pgadmin:
+    image: dpage/pgadmin4:8.13
+    container_name: nexusflow-pgadmin
+    restart: unless-stopped
+    profiles: ["tools"]
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@nexusflow.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
+  api-dp-keys:

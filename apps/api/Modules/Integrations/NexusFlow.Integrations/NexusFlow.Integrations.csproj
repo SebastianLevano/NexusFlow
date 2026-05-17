@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>NexusFlow.Integrations</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NexusFlow.Integrations.Abstractions\NexusFlow.Integrations.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Auth\NexusFlow.Auth.Abstractions\NexusFlow.Auth.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\NexusFlow.Shared\NexusFlow.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+  </ItemGroup>
+</Project>

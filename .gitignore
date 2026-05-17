@@ -1,0 +1,43 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.turbo/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+.vs/
+TestResults/
+*.nupkg
+*.snupkg
+coverage/
+*.coverage
+*.coveragexml
+
+# Misc
+.cache/
+dist/

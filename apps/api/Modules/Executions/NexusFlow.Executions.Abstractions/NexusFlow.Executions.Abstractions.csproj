@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>NexusFlow.Executions.Abstractions</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NexusFlow.Shared\NexusFlow.Shared.csproj" />
+  </ItemGroup>
+</Project>

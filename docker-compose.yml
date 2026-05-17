@@ -1,0 +1,4 @@
+# Convenience shim — actual compose file lives in infra/.
+# Run `docker compose up` from repo root and it forwards.
+include:
+  - infra/docker-compose.yml

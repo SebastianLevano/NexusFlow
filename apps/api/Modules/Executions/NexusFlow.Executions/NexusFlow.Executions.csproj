@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>NexusFlow.Executions</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NexusFlow.Executions.Abstractions\NexusFlow.Executions.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Workflows\NexusFlow.Workflows.Abstractions\NexusFlow.Workflows.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Integrations\NexusFlow.Integrations.Abstractions\NexusFlow.Integrations.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Auth\NexusFlow.Auth.Abstractions\NexusFlow.Auth.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\NexusFlow.Shared\NexusFlow.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Hangfire.AspNetCore" />
+    <PackageReference Include="Hangfire.PostgreSql" />
+    <PackageReference Include="Scrutor" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+  </ItemGroup>
+</Project>
