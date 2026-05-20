@@ -28,6 +28,9 @@ internal sealed class WorkflowConfiguration : IEntityTypeConfiguration<Workflow>
             .IsRequired()
             .HasColumnType("jsonb");
 
+        builder.Property(w => w.Layout)
+            .HasColumnType("jsonb");
+
         builder.Property(w => w.IsActive).IsRequired();
         builder.Property(w => w.CreatedAt).IsRequired();
         builder.Property(w => w.UpdatedAt);

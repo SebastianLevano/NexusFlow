@@ -212,6 +212,7 @@ public sealed class WorkflowsService(
             w.Description,
             TypeMapping.FormatTrigger(w.TriggerType),
             ParseJson(w.TriggerConfig),
+            string.IsNullOrWhiteSpace(w.Layout) ? null : ParseJson(w.Layout),
             w.IsActive,
             w.CreatedAt,
             w.UpdatedAt,
@@ -219,6 +220,24 @@ public sealed class WorkflowsService(
                 .OrderBy(s => s.OrderIndex)
                 .Select(s => new StepResponse(s.Id, s.OrderIndex, TypeMapping.FormatAction(s.ActionType), ParseJson(s.Config)))
                 .ToList());
+    }
+
+    public async Task<Result<WorkflowResponse>> UpdateLayoutAsync(Guid id, UpdateLayoutRequest req, CancellationToken ct)
+    {
+        if (currentUser.UserId is not { } userId) return WorkflowErrors.Unauthorized;
+
+        var workflow = await db.Workflows
+            .Include(w => w.Steps)
+            .SingleOrDefaultAsync(w => w.Id == id && w.UserId == userId, ct)
+            .ConfigureAwait(false);
+
+        if (workflow is null) return WorkflowErrors.NotFound;
+
+        var json = req.Layout.ValueKind == JsonValueKind.Object ? req.Layout.GetRawText() : null;
+        workflow.SetLayout(json, clock.UtcNow);
+        await db.SaveChangesAsync(ct).ConfigureAwait(false);
+
+        return Map(workflow);
     }
 
     private static string SerializeJson(JsonElement element)

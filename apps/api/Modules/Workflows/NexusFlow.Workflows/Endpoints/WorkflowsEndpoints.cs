@@ -30,6 +30,8 @@ internal static class WorkflowsEndpoints
         group.MapPost("/{id:guid}/activate", Activate).WithName("ActivateWorkflow");
         group.MapPost("/{id:guid}/deactivate", Deactivate).WithName("DeactivateWorkflow");
 
+        group.MapPut("/{id:guid}/layout", UpdateLayout).WithName("UpdateWorkflowLayout");
+
         return app;
     }
 
@@ -54,4 +56,7 @@ internal static class WorkflowsEndpoints
 
     private static async Task<IResult> Deactivate(Guid id, WorkflowsService svc, CancellationToken ct)
         => (await svc.DeactivateAsync(id, ct).ConfigureAwait(false)).ToHttp();
+
+    private static async Task<IResult> UpdateLayout(Guid id, UpdateLayoutRequest req, WorkflowsService svc, CancellationToken ct)
+        => (await svc.UpdateLayoutAsync(id, req, ct).ConfigureAwait(false)).ToHttp();
 }

@@ -40,7 +40,10 @@ public sealed record WorkflowResponse(
     string? Description,
     string TriggerType,
     JsonElement TriggerConfig,
+    JsonElement? Layout,
     bool IsActive,
     DateTimeOffset CreatedAt,
     DateTimeOffset? UpdatedAt,
     IReadOnlyList<StepResponse> Steps);
+
+public sealed record UpdateLayoutRequest(JsonElement Layout);

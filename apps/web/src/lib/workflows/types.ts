@@ -25,12 +25,23 @@ export interface WorkflowStep {
   config: Record<string, unknown>;
 }
 
+export interface WorkflowLayoutNode {
+  id: string;
+  x: number;
+  y: number;
+}
+
+export interface WorkflowLayout {
+  nodes: WorkflowLayoutNode[];
+}
+
 export interface Workflow {
   id: string;
   name: string;
   description: string | null;
   triggerType: TriggerType;
   triggerConfig: Record<string, unknown>;
+  layout: WorkflowLayout | null;
   isActive: boolean;
   createdAt: string;
   updatedAt: string | null;

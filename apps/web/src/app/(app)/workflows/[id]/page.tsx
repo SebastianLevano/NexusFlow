@@ -3,15 +3,18 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ChevronLeft, History, Loader2, Play, Power, Trash2 } from "lucide-react";
+import { ChevronLeft, History, LayoutGrid, List, Loader2, Play, Power, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { WorkflowForm } from "@/components/workflow/workflow-form";
 import { WebhookInfo } from "@/components/workflow/webhook-info";
+import { WorkflowCanvas } from "@/components/workflow/canvas/workflow-canvas";
 import { workflowsApi } from "@/lib/workflows/api";
 import { executionsApi } from "@/lib/executions/api";
 import type { Workflow } from "@/lib/workflows/types";
+
+type View = "list" | "canvas";
 
 export default function WorkflowDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +22,7 @@ export default function WorkflowDetailPage() {
   const [workflow, setWorkflow] = useState<Workflow | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [busy, setBusy] = useState<"toggle" | "delete" | "run" | null>(null);
+  const [view, setView] = useState<View>("list");
 
   const load = useCallback(async () => {
     try {
@@ -149,7 +153,39 @@ export default function WorkflowDetailPage() {
         <WebhookInfo workflowId={workflow.id} secret={webhookSecret} />
       )}
 
-      <WorkflowForm workflow={workflow} />
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-medium">Definition</h2>
+        <div className="inline-flex items-center gap-1 rounded-md border bg-background p-0.5 text-xs">
+          <button
+            type="button"
+            onClick={() => setView("list")}
+            className={
+              view === "list"
+                ? "inline-flex items-center gap-1.5 rounded-sm bg-card px-2.5 py-1 font-medium text-foreground shadow-sm"
+                : "inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-muted-foreground hover:text-foreground"
+            }
+          >
+            <List className="h-3 w-3" /> List
+          </button>
+          <button
+            type="button"
+            onClick={() => setView("canvas")}
+            className={
+              view === "canvas"
+                ? "inline-flex items-center gap-1.5 rounded-sm bg-card px-2.5 py-1 font-medium text-foreground shadow-sm"
+                : "inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-muted-foreground hover:text-foreground"
+            }
+          >
+            <LayoutGrid className="h-3 w-3" /> Canvas
+          </button>
+        </div>
+      </div>
+
+      {view === "list" ? (
+        <WorkflowForm workflow={workflow} />
+      ) : (
+        <WorkflowCanvas workflow={workflow} onLayoutSaved={setWorkflow} />
+      )}
     </div>
   );
 }

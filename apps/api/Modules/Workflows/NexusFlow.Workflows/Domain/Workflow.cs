@@ -12,9 +12,16 @@ public sealed class Workflow : BaseEntity
     public TriggerType TriggerType { get; private set; }
     public string TriggerConfig { get; private set; } = "{}";
     public bool IsActive { get; private set; }
+    public string? Layout { get; private set; }
 
     private readonly List<WorkflowStep> _steps = [];
     public IReadOnlyList<WorkflowStep> Steps => _steps.AsReadOnly();
+
+    public void SetLayout(string? layoutJson, DateTimeOffset now)
+    {
+        Layout = string.IsNullOrWhiteSpace(layoutJson) ? null : layoutJson;
+        UpdatedAt = now;
+    }
 
     public static Workflow Create(
         Guid userId,

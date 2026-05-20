@@ -10,4 +10,6 @@ export const workflowsApi = {
   remove: (id: string) => api.delete(`/workflows/${id}`).then(() => undefined),
   activate: (id: string) => api.post<Workflow>(`/workflows/${id}/activate`).then((r) => r.data),
   deactivate: (id: string) => api.post<Workflow>(`/workflows/${id}/deactivate`).then((r) => r.data),
+  updateLayout: (id: string, layout: import("./types").WorkflowLayout) =>
+    api.put<Workflow>(`/workflows/${id}/layout`, { layout }).then((r) => r.data),
 };
