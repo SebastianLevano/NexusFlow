@@ -1,6 +1,7 @@
 using System.IO;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
+using NexusFlow.Api;
 using NexusFlow.Auth;
 using NexusFlow.Auth.Infrastructure;
 using NexusFlow.Executions;
@@ -13,6 +14,11 @@ using NexusFlow.Workflows.Infrastructure;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Normalize Postgres connection string: many providers (Render, Neon, Supabase,
+// Heroku, Railway) hand you a libpq URI like `postgresql://user:pass@host/db`,
+// but the Npgsql driver used by EF Core expects keyword format.
+PostgresUrlParser.NormalizeConnectionString(builder.Configuration);
 
 builder.Host.UseSerilog((ctx, lc) => lc
     .ReadFrom.Configuration(ctx.Configuration)
