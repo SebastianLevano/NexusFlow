@@ -1,4 +1,4 @@
-import { ArrowRight, Workflow, Zap, GitBranch } from "lucide-react";
+import { ArrowRight, GitBranch, Github, Info, Workflow, Zap } from "lucide-react";
 import Link from "next/link";
 
 export default function LandingPage() {
@@ -14,6 +14,15 @@ export default function LandingPage() {
           <span className="text-sm font-semibold tracking-tight">NexusFlow</span>
         </div>
         <div className="flex items-center gap-2">
+          <a
+            href="https://github.com/SebastianLevano/NexusFlow"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Github className="h-3.5 w-3.5" />
+            Source
+          </a>
           <Link
             href="/login"
             className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -57,6 +66,15 @@ export default function LandingPage() {
           >
             See how it works
           </Link>
+        </div>
+
+        <div className="mt-8 inline-flex max-w-md items-start gap-2 rounded-md border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-left text-xs text-amber-200/90">
+          <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
+          <span>
+            <strong className="font-medium text-amber-100">Portfolio demo —</strong> the backend
+            runs on a free tier and sleeps after 15 min idle. Your first request may take{" "}
+            ~30 s while it wakes up, then it&apos;s instant.
+          </span>
         </div>
       </section>
 
